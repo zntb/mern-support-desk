@@ -8,6 +8,9 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: 'Welcome to the Support Desk API' });
 });
 
+// Routes
+app.use('/api/users', require('./routes/userRoutes.js'));
+
 app.listen(PORT, () => {
   console.log(`Serves listen on PORT ${PORT}`);
 });
