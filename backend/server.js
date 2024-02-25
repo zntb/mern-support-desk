@@ -1,7 +1,8 @@
 const express = require('express');
 const colors = require('colors');
 const dotenv = require('dotenv').config();
-const errorHandler = require('./middleware/errorMiddleware.js');
+const morgan = require('morgan');
+const { errorHandler } = require('./middleware/errorMiddleware.js');
 const connectDB = require('./config/db.js');
 const PORT = process.env.PORT || 5000;
 
@@ -9,6 +10,10 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 
 const app = express();
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -23,5 +28,5 @@ app.use('/api/users', require('./routes/userRoutes.js'));
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Serves listen on PORT ${PORT}`);
+  console.log(`Server listen on PORT ${PORT}`);
 });
