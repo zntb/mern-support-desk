@@ -8,6 +8,7 @@ import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import NewTicket from './pages/NewTicket.jsx';
+import Tickets from './pages/Tickets.jsx';
 
 function App() {
   return (
@@ -24,6 +25,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <NewTicket />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/tickets"
+              element={
+                <PrivateRoute>
+                  <Tickets />
                 </PrivateRoute>
               }
             />
