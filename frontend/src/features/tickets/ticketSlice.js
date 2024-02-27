@@ -20,17 +20,30 @@ export const createTicket = createAsyncThunk(
   }
 );
 
+// Get user tickets
+export const getTickets = createAsyncThunk(
+  'tickets/getAll',
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await ticketService.getTickets(token);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error));
+    }
+  }
+);
+
 export const ticketSlice = createSlice({
   name: 'ticket',
   initialState,
   extraReducers: (builder) => {
-    // builder
-    //   .addCase(getTickets.pending, (state) => {
-    //     state.ticket = null;
-    //   })
-    //   .addCase(getTickets.fulfilled, (state, action) => {
-    //     state.tickets = action.payload;
-    //   })
+    builder
+      .addCase(getTickets.pending, (state) => {
+        state.ticket = null;
+      })
+      .addCase(getTickets.fulfilled, (state, action) => {
+        state.tickets = action.payload;
+      });
     //   .addCase(getTicket.fulfilled, (state, action) => {
     //     state.ticket = action.payload;
     //   })
@@ -38,7 +51,7 @@ export const ticketSlice = createSlice({
     //     state.ticket = action.payload;
     //     state.tickets = state.tickets.map((ticket) =>
     //       ticket._id === action.payload._id ? action.payload : ticket
-    //     );
+    // );
     //   });
   },
 });
