@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { FaPlus } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
-import { getTicket } from '../features/tickets/ticketSlice';
+import { getTicket, closeTicket } from '../features/tickets/ticketSlice';
 import { useParams, useNavigate } from 'react-router-dom';
 import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
@@ -17,6 +17,17 @@ function Ticket() {
   useEffect(() => {
     dispatch(getTicket(ticketId)).unwrap().catch(toast.error);
   }, [ticketId, dispatch]);
+
+  // Close ticket
+  const onTicketClose = () => {
+    dispatch(closeTicket(ticketId))
+      .unwrap()
+      .then(() => {
+        toast.success('Ticket Closed');
+        navigate('/tickets');
+      })
+      .catch(toast.error);
+  };
 
   if (!ticket) {
     return <Spinner />;
@@ -35,12 +46,19 @@ function Ticket() {
         <h3>
           Date Submitted: {new Date(ticket.createdAt).toLocaleString('en-US')}
         </h3>
+        <h3>Product: {ticket.product}</h3>
         <hr />
         <div className="ticket-desc">
           <h3>Description of Issue</h3>
           <p>{ticket.description}</p>
         </div>
       </header>
+
+      {ticket.status !== 'closed' && (
+        <button className="btn btn-block btn-danger" onClick={onTicketClose}>
+          Close Ticket
+        </button>
+      )}
     </div>
   );
 }
