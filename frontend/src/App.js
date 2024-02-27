@@ -9,6 +9,7 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import NewTicket from './pages/NewTicket.jsx';
 import Tickets from './pages/Tickets.jsx';
+import Ticket from './pages/Ticket.jsx';
 
 function App() {
   return (
@@ -33,6 +34,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Tickets />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/ticket/:ticketId"
+              element={
+                <PrivateRoute>
+                  <Ticket />
                 </PrivateRoute>
               }
             />
